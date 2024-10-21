@@ -17,27 +17,10 @@ namespace DynamicReportGenerator.Api.Controllers
         [HttpGet("{userId}")]
         public async Task<IActionResult> GenerateReport(int userId)
         {
-            try
-            {
-                var report = await _reportService.GenerateUserReportAsync(userId);
-
-                if (report.FileContent != null)
-                {
-                    return File(report.FileContent, report.ContentType, report.FileName);
-                }
-                else
-                {
-                    return Ok(report);
-                }
-            }
-            catch (ArgumentException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Error al generar el informe: {ex.Message}");
-            }
+            var report = await _reportService.GenerateUserReportAsync(userId);
+            return report.FileContent != null
+                ? File(report.FileContent, report.ContentType, report.FileName)
+                : Ok(report);
         }
     }
 }

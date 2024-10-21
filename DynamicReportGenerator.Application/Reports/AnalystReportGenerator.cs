@@ -9,7 +9,6 @@ namespace DynamicReportGenerator.Application.Reports
     {
         public async Task<Report> GenerateReportAsync(Report reportData)
         {
-            // Lógica para generar el informe de analista
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
             using var package = new ExcelPackage();
@@ -18,7 +17,6 @@ namespace DynamicReportGenerator.Application.Reports
 
             worksheet.Cells[1, 1].Value = reportData.Title;
 
-            // Escribir encabezados
             worksheet.Cells[3, 1].Value = "Región";
             worksheet.Cells[3, 2].Value = "Monto";
             worksheet.Cells[3, 3].Value = "Fecha";
@@ -32,13 +30,10 @@ namespace DynamicReportGenerator.Application.Reports
                 row++;
             }
 
-            // Formatear celdas
             worksheet.Column(2).Style.Numberformat.Format = "#,##0.00";
 
-            // Ajustar ancho de columnas
             worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
 
-            // Guardar el archivo en memoria
             var fileBytes = package.GetAsByteArray();
 
             reportData.FileContent = fileBytes;

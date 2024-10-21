@@ -29,16 +29,16 @@ namespace DynamicReportGenerator.Application.Services
                     throw new ArgumentException("Usuario no encontrado.");
                 }
 
-                // Uso del Singleton
+                // Uso del Singleton #1
                 var config = ConfigurationManager.Instance;
 
-                // Uso del Factory Method
+                // Uso del Factory Method #2
                 var reportGenerator = ReportGeneratorFactory.CreateReportGenerator(user.Role);
 
                 // Obtener datos de ventas desde la base de datos
                 var salesData = await _saleRepository.GetAllAsync();
 
-                // Uso del Builder
+                // Uso del Builder #3
                 var reportBuilder = new ReportBuilder()
                     .SetTitle($"Informe para {user.Name}")
                     .SetSalesData(salesData);

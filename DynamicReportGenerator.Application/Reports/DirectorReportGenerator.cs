@@ -9,7 +9,6 @@ namespace DynamicReportGenerator.Application.Reports
     {
         public async Task<Report> GenerateReportAsync(Report reportData)
         {
-            // Lógica para generar el informe de director
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
             using var package = new ExcelPackage();
@@ -18,11 +17,9 @@ namespace DynamicReportGenerator.Application.Reports
 
             worksheet.Cells[1, 1].Value = reportData.Title;
 
-            // Escribir resumen ejecutivo
             worksheet.Cells[3, 1].Value = "Resumen Ejecutivo:";
             worksheet.Cells[4, 1].Value = reportData.ExecutiveSummary;
 
-            // Escribir total y promedio de ventas
             var totalSales = reportData.SalesData.Sum(s => s.Amount);
             var averageSales = reportData.SalesData.Average(s => s.Amount);
 
@@ -34,7 +31,6 @@ namespace DynamicReportGenerator.Application.Reports
             worksheet.Cells[7, 2].Value = averageSales;
             worksheet.Cells[7, 2].Style.Numberformat.Format = "#,##0.00";
 
-            // Crear gráfico de ventas por región
             var salesByRegion = reportData.SalesData
                 .GroupBy(s => s.Region)
                 .Select(g => new { Region = g.Key, Total = g.Sum(s => s.Amount) })
@@ -53,7 +49,6 @@ namespace DynamicReportGenerator.Application.Reports
                 row++;
             }
 
-            // Crear el gráfico
             var chart = worksheet.Drawings.AddChart("SalesChart", eChartType.PieExploded3D) as ExcelPieChart;
             chart.Title.Text = "Ventas por Región";
             chart.SetPosition(10, 0, 3, 0);
@@ -61,10 +56,8 @@ namespace DynamicReportGenerator.Application.Reports
 
             chart.Series.Add(worksheet.Cells[11, 2, row - 1, 2], worksheet.Cells[11, 1, row - 1, 1]);
 
-            // Ajustar ancho de columnas
             worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
 
-            // Guardar el archivo en memoria
             var fileBytes = package.GetAsByteArray();
 
             reportData.FileContent = fileBytes;

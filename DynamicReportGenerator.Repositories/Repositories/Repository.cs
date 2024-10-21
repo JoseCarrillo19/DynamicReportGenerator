@@ -16,7 +16,7 @@ namespace DynamicReportGenerator.Repositories.Repositories
             _entities = context.Set<T>();
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T?> GetByIdAsync(int? id)
         {
             return await _entities.FindAsync(id);
         }

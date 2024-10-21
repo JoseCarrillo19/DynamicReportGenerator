@@ -8,7 +8,6 @@ namespace DynamicReportGenerator.Application.Reports
     {
         public async Task<Report> GenerateReportAsync(Report reportData)
         {
-            // Lógica para generar el informe de gerente
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
             using var package = new ExcelPackage();
@@ -17,13 +16,11 @@ namespace DynamicReportGenerator.Application.Reports
 
             worksheet.Cells[1, 1].Value = reportData.Title;
 
-            // Escribir total de ventas
             var totalSales = reportData.SalesData.Sum(s => s.Amount);
             worksheet.Cells[3, 1].Value = "Total de Ventas:";
             worksheet.Cells[3, 2].Value = totalSales;
             worksheet.Cells[3, 2].Style.Numberformat.Format = "#,##0.00";
 
-            // Escribir ventas por región
             worksheet.Cells[5, 1].Value = "Ventas por Región";
 
             worksheet.Cells[6, 1].Value = "Región";
@@ -42,10 +39,8 @@ namespace DynamicReportGenerator.Application.Reports
                 row++;
             }
 
-            // Ajustar ancho de columnas
             worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
 
-            // Guardar el archivo en memoria
             var fileBytes = package.GetAsByteArray();
 
             reportData.FileContent = fileBytes;

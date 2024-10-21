@@ -1,6 +1,6 @@
 ﻿namespace DynamicReportGenerator.Repositories.Singleton
 {
-    public class ConfigurationManager
+    public sealed class ConfigurationManager
     {
         private static readonly Lazy<ConfigurationManager> _instance = new(() => new ConfigurationManager());
 
@@ -10,7 +10,6 @@
 
         private ConfigurationManager()
         {
-            // Simulación de carga de configuración
             ReportFormat = "Excel";
         }
     }
